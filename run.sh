@@ -13,6 +13,8 @@ RELEASE_TAG=$(echo "$RELEASE_INFO" | grep -m 1 '"tag_name":' | cut -d '"' -f 4)
 # Construct the URL for run.sh using the latest release tag
 PROFILER_URL="https://github.com/$OWNER/$REPO/releases/download/$RELEASE_TAG/profiler"
 
+
+echo "$PROFILER_URL"
 # Download the latest profiler binary, make it executable and run it
 curl -L "$PROFILER_URL" -o profiler
 chmod +x profiler

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"context"
@@ -20,6 +21,7 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("Profiler server started")
 	err = server.Serve()
 	if err != nil {
 		panic(err)
