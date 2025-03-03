@@ -9,3 +9,6 @@ build-profiler:
 
 tester:
 	go run cmd/tester/main.go > build/profiler.json
+
+build-mcp:
+	go build -o build/mcp cmd/mcp/main.go

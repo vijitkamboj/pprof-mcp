@@ -15,11 +15,18 @@ import (
 func main() {
 	done := make(chan struct{})
 
-	server := mcp_golang.NewServer(stdio.NewStdioServerTransport())
-	err := server.RegisterTool("profiler", "Get the performance profile of a golang server [ always take host as input from user first, if user denies, do not proceed with this tool ]", profileHandler)
+	server := mcp_golang.NewServer(stdio.NewStdioServerTransport(), mcp_golang.WithVersion("0.1.0"))
+	err := server.RegisterTool("profile_server", "Get the performance profile of a golang server [ 'always take host as input from user first']", profileHandler)
 	if err != nil {
 		panic(err)
 	}
+
+	// err = server.RegisterResource("test://resource", "resource_test", "This is a test resource", "application/json", func() (*mcp_golang.ResourceResponse, error) {
+	// 	return mcp_golang.NewResourceResponse(mcp_golang.NewTextEmbeddedResource("test://resource", "This is a test resource", "application/json")), nil
+	// })
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	fmt.Println("Profiler server started")
 	err = server.Serve()
