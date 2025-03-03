@@ -8,7 +8,7 @@ This tool connects to a running Go server's pprof endpoints, collects profiling 
 
 ## Installation
 
-### Option 1: Quick Install (using curl)
+### Option 1: Quick Install (for a system that does not has go compiler)
 
 ```bash
 curl -fsSl https://raw.githubusercontent.com/vijitkamboj/pprof-mcp/main/run.sh | sh
