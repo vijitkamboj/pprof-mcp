@@ -1,4 +1,4 @@
-package sampler
+package profiler
 
 import (
 	"fmt"
@@ -9,11 +9,10 @@ import (
 
 type Sampler interface {
 	Path() string
+	Name() ProfileType
 	QueryParams() map[string]string
-	Summary(*profile.Profile) (any, error)
+	Summary(*profile.Profile, ProfilerDepth) (any, error)
 }
-
-const Value = "value"
 
 func GetParsedProfile(serverAddr string, path string, queryParams map[string]string) (*profile.Profile, error) {
 	// Construct the URL for the specific profile

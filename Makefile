@@ -1,14 +1,14 @@
 mock:
-	go run cmd/mock/main.go
+	go run cmd/mock-server/main.go
 
 profiler:
 	go run cmd/profiler/main.go
 
-build-profiler:
-	go build -o build/profiler cmd/profiler/main.go
-
 tester:
-	go run cmd/tester/main.go > build/profiler.json
+	go run cmd/test-profiler/main.go > build/profiler.json
 
-build-mcp:
-	go build -o build/mcp cmd/mcp/main.go
+build-profiler:
+	go build -o build/profiler cmd/server/server.go
+
+install-latest-profiler:
+	 go install github.com/vijitkamboj/pprof-mcp/cmd/profiler@latest

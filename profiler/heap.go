@@ -1,4 +1,4 @@
-package sampler
+package profiler
 
 import (
 	"sort"
@@ -16,49 +16,21 @@ func NewHeapSampler(queryParams map[string]string) *HeapSampler {
 	}
 }
 
-func (s *HeapSampler) Summary(prof *profile.Profile) (any, error) {
-	return createSummary(prof)
+func (s *HeapSampler) Path() string {
+	return Heap.URL()
 }
 
-func (s *HeapSampler) Path() string {
-	return "/debug/pprof/heap"
+func (s *HeapSampler) Name() ProfileType {
+	return Heap
 }
 
 func (s *HeapSampler) QueryParams() map[string]string {
 	return s.queryParams
 }
 
-// Summary represents a condensed profile summary suitable for LLM analysis
-type HeapSummary struct {
-	SampleTypes []SampleTypeInfo     `json:"sampleTypes"`
-	TopSamples  []CondensedSample    `json:"topSamples"`
-	Stats       map[string]int64     `json:"stats"`
-	MemoryUsage []MemoryUsageSummary `json:"memoryUsage"`
-}
+func (s *HeapSampler) Summary(prof *profile.Profile, depth ProfilerDepth) (any, error) {
 
-type SampleTypeInfo struct {
-	Type string `json:"type"`
-	Unit string `json:"unit"`
-}
-
-type CondensedSample struct {
-	Value        []int64   `json:"value"`
-	TopFunctions []string  `json:"topFunctions"`
-	Labels       LabelInfo `json:"labels,omitempty"`
-}
-
-type LabelInfo struct {
-	Labels   map[string]string  `json:"labels,omitempty"`
-	NumLabel map[string][]int64 `json:"numLabels,omitempty"`
-}
-
-type MemoryUsageSummary struct {
-	Size  int64  `json:"size"`
-	Count int64  `json:"count"`
-	Stack string `json:"topFunction"`
-}
-
-func createSummary(prof *profile.Profile) (any, error) {
+	// return prof, nil
 	summary := HeapSummary{
 		Stats:       make(map[string]int64),
 		MemoryUsage: []MemoryUsageSummary{},
@@ -183,4 +155,34 @@ func findMemoryObjectsIndex(prof *profile.Profile) int {
 		}
 	}
 	return -1
+}
+
+// Summary represents a condensed profile summary suitable for LLM analysis
+type HeapSummary struct {
+	SampleTypes []SampleTypeInfo     `json:"sampleTypes"`
+	TopSamples  []CondensedSample    `json:"topSamples"`
+	Stats       map[string]int64     `json:"stats"`
+	MemoryUsage []MemoryUsageSummary `json:"memoryUsage"`
+}
+
+type SampleTypeInfo struct {
+	Type string `json:"type"`
+	Unit string `json:"unit"`
+}
+
+type CondensedSample struct {
+	Value        []int64   `json:"value"`
+	TopFunctions []string  `json:"topFunctions"`
+	Labels       LabelInfo `json:"labels,omitempty"`
+}
+
+type LabelInfo struct {
+	Labels   map[string]string  `json:"labels,omitempty"`
+	NumLabel map[string][]int64 `json:"numLabels,omitempty"`
+}
+
+type MemoryUsageSummary struct {
+	Size  int64  `json:"size"`
+	Count int64  `json:"count"`
+	Stack string `json:"topFunction"`
 }
